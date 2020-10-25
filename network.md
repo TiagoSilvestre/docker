@@ -21,6 +21,7 @@ Existem 3 tipos de redes que se pode criar no docker
 - Criar 2 containers e fazer um pingar no outro:
 
 ```docker run -d --name nginx3 --net=my_network nginx``` = cria um container passando a network criada acima
+
 ```docker run -d --name nginx4 --net=my_network nginx``` = cria outro container passando a network criada acima
 
 - Entrar no bash de um deles e instalar o ping
