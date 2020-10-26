@@ -31,4 +31,4 @@ apt-get update
 apt-get install iputils-ping
 ping nginx4
 ```
-As informaçoes do ping irao aparecer na tela
+As informaçoes do ping irao aparecer na tela.
