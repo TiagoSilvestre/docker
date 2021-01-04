@@ -1,0 +1,128 @@
+Remover todos os containers, rodar no bash 
+
+docker rm $(docker ps -aq) -f
+--------------------------------------
+PROBLEMAS AO INICIALIZAR O DOCKER,
+IR EM PESQUISAR NO WINDOWS E DIGITAR SERVIÇOS E ATIVAR O SERVIÇO 'SERVER'
+--------------------------------------
+docker info == traz varias informaçoes sobre containers e outros
+docker ps == lista os containers que estao rodando
+docker ps -a == lista os containers parados tambem
+docker images == traz informaçoes sobre as imagens já baixadas no client
+
+docker pull ubuntu == baixa a imagem 
+
+docker inspect + container Id == traz todas as informaçoes do container
+
+docker start + containerID == entra no container
+
+docker container exec containerID <comando, ex: ls -l> ==  executa um comanando num container que esta rodando, OU
+docker exec containerName bash == ele vai entrar no bash e sair 
+docker exec -it containerName bash == agora ele executa o bash e fica nele devido ao modo iterativo (-it)
+
+docker stop + containerID == para a execuçao do container
+
+docker rm + containerName ou containerID == exclui o container
+docker rmi + containerName ou containerID == exclui a imagem
+
+docker attach + containerId == entra de novo no container
+*************************
+-- DOCKER RUN
+
+// ### Quando executa um docker run, ele cria o container e já sai dele, para executar ele depois é necessario executar um start
+
+docker run -it --name teste debian  == cria um container chamado teste com a imagem do debian, e entra no container, pra sair do container CTRL + p+q
+docker run -it -v C:\docker\primeiro_dockerfile:/volume debian == cria um volume mapeando uma pasta do host para o container
+
+docker run alpine ls -l == Criou e iniciou o container com base na imagem alpine e enviou o comando ls -l, executou o comando e sai do container
+
+docker container run -it alpine /bin/bash == cria o container e fica dentro dele, o /bin/bash é para executar o terminal
+
+-d -> executa o container em modo detached, que é em segundo plano, sem travar o terminal
+-f -> força a remoçao de um container, por exemplo docker rm -f containerId = faz o container parar e remove ele
+*************************
+-- PORTAS, Mapeando portas de um container para o host
+
+docker container run --name nginxTiago -P -d nginx
+
+-P -> mapeia a porta do nginx, no caso a 80, para uma porta aleatória entre 49153 a 65535 do host,
+      e no navegador voce pode acessar: localhost:numeroDaPortaAleatoriaGerada
+-p 8080:80 -> Define a porta do host que sera acessada no navegador, no caso 8080, e a porta do 
+              host que esta executando a aplicação do container docker
+-d -> executa o container em modo detached, que é em segundo plano, sem travar o terminal
+
+*************************
+-- NETWORKS, existem 3 tipos de redes que se pode criar no docker
+
+1. Bridge = é uma ponte de comunicação entre os containers, quando um container precisa conversar com outro tem uma network de bridge
+2. None = essa config diz pro container que ele nao vai ter acesso a nenhuma rede externa
+3. Host = quando o seu container fala com a rede do seu computador de igual pra igual
+
+docker network ls = traz as networks criadas
+
+docker network inspect bridge = ele traz mais informações sobre a rede bridge, neste caso
+
+docker network create -d bridge my_network =  cria uma network do tipo bridge chamada "my_network"
+
+docker run -d --name nginx3 --net=my_network nginx = cria um container passando a network criada acima
+
+*************************
+-- VOLUMES: mapeando pastas de um host para container
+Temos o container e a nossa maquina com o Hd, ok?
+Quando o container é removido, os arquivos criados no container sao perdidos tambem, 
+no caso depois de criar um volume fica sincronizado as duas pastas do host e do container
+o que tem em uma tem na outra
+
+docker container run -d --name ws1 -p 8080:80 -v %cd%/docker:/usr/share/nginx/html nginx
+
+-d -> executa o container em modo detached, que é em segundo plano, sem travar o terminal
+--name ws1 -> define o nome do container como ws1
+-p -> mapeia a porta 8080 do host para a porta 80 do container
+-v -> mapeia a pasta $(pwd)/html do host para a pasta /usr/share/nginx/html do container
+nginx -> nome da image usada
+
+ou seja: -v <pasta_do_host>:<pasta_do_container>
+
+docker volume ls = mostra os volumes e aonde estão
+docker volume create volume_name = cria um volume local com o nome de volume_name
+docker volume inspect volume_name = mostra mais opçoes do volume criado com o nome volume_name
+docker volume create --driver local --opt type=none --opt device=%cd% --opt o=bind volume_local == cria um volume passando opções
+
+docker run -d --name=nginx2 -p 8081:80 -v volume_local2:/usr/share/nginx/html nginx == cria um container e bota pra rodar em segundo plano e associa o volume a ele
+-----------------------------------------
+images ~ stopped containers
+containers ~ running images
+
+-----------------------------------------
+
+-- Esse comando roda a imagem 'node' na porta 8080 do host para a porta 3000 do docker
+-- tambem cria um volume(-v) na pasta atual '$(pwd)' mapeando para a pasta /var/www
+-- e tambem usa o -w para executar o comando npm start na pasta /var/www
+docker run -p 8080:3000 -v $(pwd):/var/www -w "/var/www" node npm start
+
+-----------------------------------------
+Como usar a variavel do diretorio local nos terminais
+--- CMD
+docker run --rm -it -v %cd%:/usr/src/project gcc:4.9
+
+--- PowerShell
+docker run --rm -it -v ${PWD}:/usr/src/project gcc:4.9
+
+--- Linux
+docker run --rm -it -v $(pwd):/usr/src/project gcc:4.9
+-----------------------------------------
+
+docker build -t <your username>/node .
+
+-t = o nome da tag
+
+** Instala o ping no container do nginx
+
+apt-get install iputils-ping
+
+
+LEARNING DOCKER
+https://www.youtube.com/watch?v=zIOqJhlk9VY&list=PL16WqdAj66SBSLZ2-TrZ5q_39UhtKyL9U
+
+MINICURSO DOCKER
+https://www.youtube.com/watch?v=64Su3Xb5EgM&list=PLJ4k1IC8GhW1kYcw5Fiy71cl-vfoVpqlV&index=13
