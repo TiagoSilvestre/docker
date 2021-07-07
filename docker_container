@@ -1,0 +1,25 @@
+DOCKER CONTAINER
+
+
+Para acessar o terminal de um container, o docker só permitiria a conexão com o terminal dos containers que estão em execução, 
+quando colocamos docker run o container é criado, mas não ficará em execução.
+
+Ao criar o container você poderá deixá-lo rodando em modo "desatachado", dessa forma o processo continuará existindo e você conseguirá acessá-lo depois.
+
+Uma sugestão, seria:
+
+docker run -it -d ubuntu
+
+Com isso o container será criado e o processo estará em execução. Depois você poderá utilizar o comando :
+
+docker exec -it [nome container] bash
+
+Para poder assim acessar o container e inserir os comandos.
+
+Caso você já tenha criado o container e ele tenha parado, poderá inicializá-lo novamente com o comando:
+
+docker start [nome container]
+
+E depois para acessar o bash:
+
+docker exec -it [nome do container] bash
