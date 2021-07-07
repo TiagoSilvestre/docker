@@ -1,2 +1,3 @@
-DOCKER IMAGES
+## DOCKER IMAGES
 
+```docker rmi <your-image-id>``` remove a imagem pelo id
