@@ -1,3 +1,5 @@
-## DOCKER IMAGES
+DOCKER IMAGES
 
-```docker rmi <your-image-id>``` remove a imagem pelo id
+docker images ==> traz informaçoes sobre as imagens já baixadas no client
+
+docker rmi + containerName ou containerID == exclui a imagem
