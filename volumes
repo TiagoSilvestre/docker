@@ -5,3 +5,20 @@ o container foi criado para ser sem estado, e não persistir coisas nele.
 
 
 docker volume ls   ==== lista os volumes da maquina local
+
+
+Quando se cria um volume, tudo que tem dentro da pasta do volume tambem existe na maquina local
+
+docker inspect containerName ===== Traz informaçoes sobre o volume
+
+no inspect tem a pripriedade 'Mounts', nele ele traz nformaçao de volume, nesse objeto tem o type = volume, o name que é o mesmo
+de quando tu da um docker volume ls. E o source é aonde na maquina local ele vai armazenar os dados. E o destinatio é para onde vai ser
+mapeado para dentro do container.
+
+Se voce deletar todos os containers, voce pode observar que os volumes(docker volume ls) ainda vao continuar lá, e essa é a ideia,
+os volumes vao ficar persistindo
+
+
+docker volume rm volumeName   === apaga o volume
+
+docker volume prune   ==== apaga os volumes que não estão sendo utilizados por nenhum container
