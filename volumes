@@ -2,8 +2,6 @@ VOLUMES
 
 o container foi criado para ser sem estado, e não persistir coisas nele.
 
-
-
 docker volume ls   ==== lista os volumes da maquina local
 
 
@@ -22,3 +20,18 @@ os volumes vao ficar persistindo
 docker volume rm volumeName   === apaga o volume
 
 docker volume prune   ==== apaga os volumes que não estão sendo utilizados por nenhum container
+
+LISTAR VOLUMES na pasta padrao
+
+sudo ls /var/lib/docker/volumes
+
+CRIAR VOLUME
+
+docker volume create volumeNAME   === cria um volume chamado volumeName
+
+PASSAR VOLUME CRIADO PARA O CONTAINER
+** abaixo ele cria o container passando o -v com o nome do volume criado anteriormente
+
+docker run -it --name testeCndSP2 -v municipalSP mamohr/centos-java
+
+
