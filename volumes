@@ -1,0 +1,7 @@
+VOLUMES
+
+o container foi criado para ser sem estado, e não persistir coisas nele.
+
+
+
+docker volume ls   ==== lista os volumes da maquina local
